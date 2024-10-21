@@ -45,6 +45,7 @@ namespace Lab_1.Controllers
                 return NotFound();
             }
             var students = await _context.Passengers.Include("Flights").ToListAsync();
+            //List<PassengerDTO> studs = students;
             return students;
         }
 

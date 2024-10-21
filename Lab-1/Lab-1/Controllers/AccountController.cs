@@ -24,7 +24,7 @@ namespace Lab_1.Controllers
             var identity = AuthOptions.GetIdentity(ld.login, ld.password);
             if (identity == null)
             {
-                return Unauthorized(new { errorText = "Invalid username or password." });
+                return BadRequest(new { errorText = "Invalid username or password." });
             }
 
             return AuthOptions.GenerateToken(identity);

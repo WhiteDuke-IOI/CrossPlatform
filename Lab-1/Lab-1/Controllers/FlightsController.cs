@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab_1.Data;
 using Lab_1.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lab_1.Controllers
 {
@@ -22,8 +23,8 @@ namespace Lab_1.Controllers
         }
 
         // POST: api/Flights
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<Flight>> AddFlight([FromBody] Flight flight)
         {
             _context.Flights.Add(flight);
@@ -55,12 +56,13 @@ namespace Lab_1.Controllers
 
         // GET: api/Flights/5
         [HttpGet("{number}/GetPassenger")]
+        [Authorize(Roles = "user")]
         public async Task<ActionResult<IEnumerable<int>>> GetPassengeerOnFlight(int number)
         {
-            var selectedPeople = _context.Passengers.SelectMany(p => p.Flights,
+            var selectedPeople = await _context.Passengers.SelectMany(p => p.Flights,
                             (p, f) => new { Passenger = p, Flight = f })
                           .Where(p => p.Flight.Number == number)
-                          .Select(u => u.Passenger.ID).ToList();
+                          .Select(u => u.Passenger.ID).ToListAsync();
 
             /*var test = from passenger in _context.Passengers
                                  from flight in passenger.Flights
@@ -76,15 +78,10 @@ namespace Lab_1.Controllers
         }
 
         // PUT: api/Flights
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutFlight([FromBody] Flight flights)
         {
-            /*if (id != flights.Number)
-            {
-                return BadRequest();
-            }*/
-
             _context.Entry(flights).State = EntityState.Modified;
 
             try
@@ -108,6 +105,7 @@ namespace Lab_1.Controllers
 
         // DELETE: api/Flights/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteFlight(int id)
         {
             var flights = await _context.Flights.FindAsync(id);

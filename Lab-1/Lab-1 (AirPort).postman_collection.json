@@ -24,9 +24,6 @@
 				"disabledSystemHeaders": {}
 			},
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -39,12 +36,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Auth",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Auth",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Auth"
@@ -59,21 +54,11 @@
 				"disabledSystemHeaders": {}
 			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"number\": 0,\r\n  \"route\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"dapartingTime\": \"2024-10-18T15:53:37.247Z\",\r\n  \"arrivalTime\": \"2024-10-18T15:53:37.247Z\"\r\n}",
+					"raw": "{\r\n  \"number\": 0,\r\n  \"route\": \"test\",\r\n  \"cityFrom\": \"moscow\",\r\n  \"cityTo\": \"sochi\",\r\n  \"dapartingTime\": \"2024-10-18T15:53:37.247Z\",\r\n  \"arrivalTime\": \"2024-10-18T15:53:37.247Z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -81,12 +66,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Flights",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights"
@@ -104,12 +87,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Flights",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights"
@@ -124,16 +105,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Flights/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -142,30 +127,24 @@
 		{
 			"name": "Get passenger on flight",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Flights/1/GetPassenger",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights/:id/GetPassenger",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights",
-						"1",
+						":id",
 						"GetPassenger"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -174,16 +153,6 @@
 		{
 			"name": "Update flight",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "PUT",
 				"header": [],
 				"body": {
@@ -196,16 +165,20 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Flights/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
 					]
 				}
 			},
@@ -214,29 +187,23 @@
 		{
 			"name": "Delete flight",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Flights/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Flights/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Flights",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
 					]
 				}
 			},
@@ -248,16 +215,6 @@
 				"disabledSystemHeaders": {}
 			},
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -270,12 +227,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Passengers",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passengers",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passengers"
@@ -293,12 +248,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Passengers",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passengers",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passengers"
@@ -316,16 +269,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Passengers/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passengers/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passengers",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -334,30 +291,24 @@
 		{
 			"name": "Get passenger's flight",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Passenger/1/GetFlights",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passenger/:id/GetFlights",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passenger",
-						"1",
+						":id",
 						"GetFlights"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -378,16 +329,20 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Passenger/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passenger/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passenger",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -408,16 +363,21 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Passenger/1AddOnFlights",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passenger/:id/AddOnFlights",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passenger",
-						"1AddOnFlights"
+						":id",
+						"AddOnFlights"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -438,47 +398,46 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:7017/api/Passenger/1AddOnFlights",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passenger/:id/AddOnFlights",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passenger",
-						"1AddOnFlights"
+						":id",
+						"AddOnFlights"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Delete flight Copy",
+			"name": "Delete passenger",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5AZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJuYmYiOjE3MjkyNjQyMTAsImV4cCI6MTcyOTI2NDI3MCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.Dc2j0cClPJU8qtadsA3n4YvfBMDrmYbEasmk_np6zDs",
-							"type": "string"
-						}
-					]
-				},
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:7017/api/Passengers/1",
-					"protocol": "https",
+					"raw": "{{Host}}/api/Passengers/:id",
 					"host": [
-						"localhost"
+						"{{Host}}"
 					],
-					"port": "7017",
 					"path": [
 						"api",
 						"Passengers",
-						"1"
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -490,7 +449,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6InVzZXIiLCJuYmYiOjE3Mjk1MDQ0NjAsImV4cCI6MTcyOTUwNDUyMCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.KTDr1MUNb5WpsulnKgSYouSSQHjX8Y5ts35S0oak2fE",
 				"type": "string"
 			}
 		]
@@ -515,6 +474,12 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Host",
+			"value": "https://localhost:7017"
 		}
 	]
 }

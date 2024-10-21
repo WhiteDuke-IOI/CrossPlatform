@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Lab_1.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Data.Sqlite;
 
 namespace Lab_1.Data
 {
@@ -14,6 +15,17 @@ namespace Lab_1.Data
             : base(options)
         {
             Database.EnsureCreated(); // создаёт базу данных
+            //Database.Migrate();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = "MyDb.db" };
+            var connectionString = connectionStringBuilder.ToString();
+            var connection = new SqliteConnection(connectionString);
+            optionsBuilder.UseSqlite(connection);
+
+            //optionsBuilder.UseSqlite("Filename=MyDatabase.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -15,13 +15,13 @@ namespace Lab_1.Migrations
                 name: "Flights",
                 columns: table => new
                 {
-                    Number = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Route = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CityFrom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CityTo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DapartingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Number = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Route = table.Column<string>(type: "TEXT", nullable: false),
+                    CityFrom = table.Column<string>(type: "TEXT", nullable: false),
+                    CityTo = table.Column<string>(type: "TEXT", nullable: false),
+                    DepartingTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ArrivalTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,11 +32,11 @@ namespace Lab_1.Migrations
                 name: "Passengers",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Loyalty = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Surname = table.Column<string>(type: "TEXT", nullable: false),
+                    Loyalty = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,8 +47,8 @@ namespace Lab_1.Migrations
                 name: "FlightPassenger",
                 columns: table => new
                 {
-                    FlightsNumber = table.Column<int>(type: "int", nullable: false),
-                    PassengerID = table.Column<int>(type: "int", nullable: false)
+                    FlightsNumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    PassengerID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

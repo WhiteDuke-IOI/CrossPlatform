@@ -14,6 +14,13 @@ namespace Lab_1.Models
         [Display(Name = "Flight Numbers")]
         public List<Flight>? Flights { get; set; }
 
+        //public Passenger(PassengerDTO pass) {
+        //    ID = pass.ID;
+        //    Name = pass.Name;
+        //    Surname = pass.Surname;
+        //    Loyalty = pass.Loyalty;
+        //}
+
         public Passenger Update(PassengerDTO pass)
         {
             this.Name = pass.Name; 
@@ -30,5 +37,13 @@ namespace Lab_1.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Loyalty { get; set; }
+
+        //public PassengerDTO(Passenger pass)
+        //{
+        //    ID = pass.ID;
+        //    Name = pass.Name;
+        //    Surname = pass.Surname;
+        //    Loyalty = pass.Loyalty;
+        //}
     }
 }
