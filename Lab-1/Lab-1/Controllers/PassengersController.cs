@@ -28,12 +28,12 @@ namespace Lab_1.Controllers
         // Admin
         [HttpPost] // POST: api/Passengers
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<Passenger>> AddPassenger([FromBody] Passenger student)
+        public async Task<ActionResult<Passenger>> AddPassenger([FromBody] Passenger passenger)
         {
-            _context.Passengers.Add(student);
+            _context.Passengers.Add(passenger);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPassenger", new { id = student.ID }, student);
+            return passenger;
         }
 
         // All
@@ -44,9 +44,9 @@ namespace Lab_1.Controllers
             {
                 return NotFound();
             }
-            var students = await _context.Passengers.Include("Flights").ToListAsync();
+            var passengers = await _context.Passengers.Include("Flights").ToListAsync();
             //List<PassengerDTO> studs = students;
-            return students;
+            return passengers;
         }
 
         // All
@@ -57,12 +57,12 @@ namespace Lab_1.Controllers
             {
                 return NotFound();
             }
-            var student = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
-            if (student == null)
+            var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
+            if (passenger == null)
             {
                 return NotFound();
             }
-            return student;
+            return passenger;
         }
 
         // All
@@ -73,13 +73,13 @@ namespace Lab_1.Controllers
             {
                 return NotFound();
             }
-            var student = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
-            if (student == null)
+            var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
+            if (passenger == null)
             {
                 return NotFound();
             }
 
-            var SortedFlights = student.Flights.OrderBy(exams => exams.DepartingTime).ToList();
+            var SortedFlights = passenger.Flights.OrderBy(flight => flight.DepartingTime).ToList();
 
             return SortedFlights;
         }
@@ -87,15 +87,15 @@ namespace Lab_1.Controllers
         // User
         [HttpPut] // PUT: api/Passengers/5
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> PutPassenger([FromBody] PassengerDTO stud)
+        public async Task<ActionResult> PutPassenger([FromBody] PassengerDTO pass)
         {
             if (_context.Passengers == null)
                 return NotFound();
-            var student = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == stud.ID);
-            if (student == null)
+            var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == pass.ID);
+            if (passenger == null)
                 return NotFound();
 
-            _context.Passengers.Update(student.Update(stud));
+            _context.Passengers.Update(passenger.Update(pass));
 
             await _context.SaveChangesAsync();
 
@@ -105,7 +105,7 @@ namespace Lab_1.Controllers
         // User
         [HttpPut("{id}/AddOnFlights")] // PUT: api/Passengers/5/AddOnFlight
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> AddPassengerOnFlight(int id, [FromBody] List<int> FlightsID)
+        public async Task<ActionResult<Passenger>> AddPassengerOnFlight(int id, [FromBody] List<int> FlightsID)
         {
             if (_context.Passengers == null)
                 return NotFound();
@@ -127,13 +127,13 @@ namespace Lab_1.Controllers
             _context.Passengers.Update(passenger);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPassenger", new { id = passenger.ID }, passenger);
+            return passenger;
         }
 
         // User
-        [HttpPut("{id}/RemoveRfomFlights")] // PUT: api/Passengers/5/AddOnFlight
+        [HttpPut("{id}/RemoveFromFlights")] // PUT: api/Passengers/5/AddOnFlight
         [Authorize(Roles = "user")]
-        public async Task<IActionResult> RemovePassengerFromFlight(int id, [FromBody] List<int> FlightsID)
+        public async Task<ActionResult<Passenger>> RemovePassengerFromFlight(int id, [FromBody] List<int> FlightsID)
         {
             if (_context.Passengers == null)
                 return NotFound();
@@ -155,13 +155,13 @@ namespace Lab_1.Controllers
             _context.Passengers.Update(passenger);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPassenger", new { id = passenger.ID }, passenger);
+            return passenger;
         }
 
         // Admin
         [HttpDelete("{id}")] // DELETE: api/Passengers/5
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> DeletePassenger(int id)
+        public async Task<ActionResult> DeletePassenger(int id)
         {
             var passengers = await _context.Passengers.FindAsync(id);
             if (passengers == null)
