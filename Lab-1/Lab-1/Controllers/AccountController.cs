@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System;
-using Lab_1.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Lab_1.Controllers
 {

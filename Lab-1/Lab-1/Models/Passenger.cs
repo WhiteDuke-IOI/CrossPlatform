@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Update.Internal;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Lab_1.Models
 {
@@ -45,10 +43,10 @@ namespace Lab_1.Models
 
         public PassengerDTO(Passenger pass)
         {
-            ID = pass.ID;
-            Name = pass.Name;
-            Surname = pass.Surname;
-            Loyalty = pass.Loyalty;
+            this.ID = pass.ID;
+            this.Name = pass.Name;
+            this.Surname = pass.Surname;
+            this.Loyalty = pass.Loyalty;
         }
     }
 }

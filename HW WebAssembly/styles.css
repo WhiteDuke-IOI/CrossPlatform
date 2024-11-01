@@ -1,0 +1,35 @@
+body{
+/*    background-color: black;*/
+}
+
+.text-block {
+    margin-top: 3px;
+    margin-left:20px;
+}
+
+.text-block2 {
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.text-block3 {
+    text-align: center;
+}
+
+.place-block {
+    width: 100px;
+    text-align: center;
+}
+
+.field-set {
+    display: inline-block;
+}
+
+#currentColor {
+    width: 100px;
+    height: 100px;
+}
+
+#3d-graph {
+    width: 1920px;
+}

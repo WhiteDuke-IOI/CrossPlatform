@@ -1,0 +1,959 @@
+<head>
+    <title>HomeWork by AC2104</title>
+    <link rel="stylesheet" href="styles.css">
+    <style> body { margin: 0; }</style>
+    <script type="text/javascript" src="./ford_bellman.js"></script>
+<!--    <script src="/3d-force-graph-my.js"></script>-->
+    <script src="//unpkg.com/3d-force-graph"></script>
+</head>
+
+<body>
+<fieldset class="field-set">
+    <legend>Mode Edit Graph</legend>
+
+    <div class="text-block">
+        <div>
+            <input type="radio" id="addNode" name="mode" value="1" />
+            <label for="addNode">Add Node</label>
+            <input type="checkbox" id="checkReverse1">
+            <label for="checkReverse1">Reverse links</label>
+        </div>
+
+        <div class="text-block">
+            <input type="radio" id="addNodeRandom" name="modeNode" value="1" checked />
+            <label for="addNodeRandom">Random Weight:</label>
+            <input class="place-block" placeholder="Max Weight" id="numRandomWeightNode"/>
+            <input type="radio" id="addNodeSpec" name="modeNode" value="1"/>
+            <label for="addNodeSpec">Special Weight:</label>
+            <input class="place-block" placeholder="Max Weight" id="numSpecWeightNode"/>
+        </div>
+
+        <div>
+            <input type="radio" id="addLinks" name="mode" value="2" checked/>
+            <label for="addLinks">Add Links</label>
+        </div>
+
+        <div class="text-block">
+            <input type="radio" id="addLinkRandom" name="modeLinks" value="1" checked/>
+            <label for="addNodeRandom">Random Weight:</label>
+            <input class="place-block" placeholder="Max Weight" id="numRandomWeightLinks"/>
+            <input type="radio" id="addLinkSpec" name="modeLinks" value="1"/>
+            <label for="addNodeSpec">Special Weight:</label>
+            <input class="place-block" placeholder="Max Weight" id="numSpecWeightLinks"/>
+        </div>
+
+        <div>
+            <input type="radio" id="deleteNode" name="mode" value="3" />
+            <label for="deleteNode">Delete Node/Link</label>
+        </div>
+
+        <div>
+            <input type="radio" id="changeColor" name="mode" value="4" />
+            <label for="changeColor">Change Color RGB</label>
+            <input class="place-block" placeholder="0,255,255,1" id="changeColorRGB"/>
+             <label id="currentColor" style="color:#00FFFF; background:#00FFFF" >-----------------</label>
+        </div>
+
+        <div>
+            <input type="radio" id="findShortPath" name="mode" value="5" checked />
+            <label for="findShortPath">Find Short Path</label>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="field-set">
+    <legend>Edit NODE</legend>
+    <div class="text-block">
+        <button id="addRandomNodesFromDocButton">Add Random Nodes</button>
+        <label class="text-block2">Num Nodes</label>
+        <input class="place-block" placeholder="Num Nodes" id="numNodes"/>
+        <label class="text-block2">Random Weights</label>
+        <input class="place-block" placeholder="Max Weight" id="randomWeightNodes"/>
+    </div>
+
+    <div class="text-block">
+        <button id="addNodeFromDocButton">Add Node</button>
+        <label class="text-block2">Connect New Node To</label>
+        <input class="place-block" placeholder="Node ID" id="connectNodeID"/>
+        <input class="place-block" placeholder="Weight" id="connectNodeIDWeight"/>
+        <input type="checkbox" id="checkReverse2">
+        <label for="checkReverse2">Reverse links</label>
+    </div>
+
+    <div class="text-block">
+        <button id="deleteNodeFromDocButton">Delete Node</button>
+        <label class="text-block2">Delete Node</label>
+        <input class="place-block" placeholder="Node ID" id="deleteNodeID"/>
+    </div>
+
+</fieldset>
+
+<fieldset class="field-set">
+    <legend>Edit LINKS</legend>
+    <div class="text-block">
+        <button id="withoutDirection">Without Direction</button>
+    </div>
+    <div class="text-block">
+        <button id="addRandomLinksFromDocButton">Add Random Links</button>
+        <label class="text-block2">Num Links</label>
+        <input class="place-block" placeholder="Num Nodes" id="numLinks"/>
+        <label class="text-block2">Random Weights</label>
+        <input class="place-block" placeholder="Max Weight" id="randomWeightLinks"/>
+    </div>
+
+    <div class="text-block">
+        <button id="addLinksFromDocButton">Add Links</button>
+        <label class="text-block2">Connect</label>
+        <input class="place-block" placeholder="Node ID" id="connectLinkID"/>
+        <label class="text-block2">To</label>
+        <input class="place-block" placeholder="Node ID" id="connectLinkToID"/>
+        <label class="text-block2">Weight</label>
+        <input class="place-block" placeholder="Node ID" id="connectLinkWeight"/>
+    </div>
+
+    <div class="text-block">
+        <button id="deleteLinksFromDocButton">Delete Links</button>
+        <label class="text-block2">Delete</label>
+        <input class="place-block" placeholder="Node ID" id="deleteLinkID"/>
+        <label class="text-block2">To</label>
+        <input class="place-block" placeholder="Node ID" id="deleteLinkToID"/>
+    </div>
+
+    <div class="text-block">
+        <button id="editLinksFromDocButton">Edit Links</button>
+        <label class="text-block2">From</label>
+        <input class="place-block" placeholder="Node ID" id="editLinkID"/>
+        <label class="text-block2">To</label>
+        <input class="place-block" placeholder="Node ID" id="editLinkToID"/>
+        <label class="text-block2">Weight</label>
+        <input class="place-block" placeholder="Node ID" id="editLinkWeight"/>
+    </div>
+</fieldset>
+
+<fieldset>
+    <div>
+        <input type="checkbox" id="checkView1">
+        <label for="checkView1">Hide Number Node</label>
+        <input type="checkbox" id="checkView2">
+        <label for="checkView2">Hide Weight Links</label>
+        <input type="checkbox" id="checkView3">
+        <label for="checkView3">Hide Node</label>
+
+        <input type="checkbox" id="checkView4">
+        <label for="checkView4">Small Links</label>
+
+        <input type="checkbox" id="checkView5">
+        <label for="checkView5">Hide Links</label>
+
+        <input type="checkbox" id="checkView6">
+        <label for="checkView6">Hide Particles</label>
+
+        <input type="checkbox" id="checkView7">
+        <label for="checkView7">Hide Arrows</label>
+        <button id="reDraw">reDraw</button>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Statistics</legend>
+    <div id="numStat"></div>
+    <div id="shorPath">SHORT PATH:</div>
+    <button id="showShortPath">Show Short Path</button>
+
+    <div>
+        <button id="findShortPathFromDoc">Find Short Path</button>
+        <label class="text-block2">From</label>
+        <input class="place-block" placeholder="Node ID" id="fromShortPath"/>
+        <label class="text-block2">To</label>
+        <input class="place-block" placeholder="Node ID" id="toShortPath"/>
+    </div>
+</fieldset>
+
+<div id="3d-graph"></div>
+
+<script type="importmap">{ "imports": { "three": "//unpkg.com/three/build/three.module.js" }}</script>
+
+<script type="module">
+    import {CSS2DRenderer, CSS2DObject} from '//unpkg.com/three/examples/jsm/renderers/CSS2DRenderer.js';
+    import SpriteText from "//unpkg.com/three-spritetext/dist/three-spritetext.mjs";
+
+    let NODES = 20;
+    let initData = {
+        nodes: [...Array(NODES).keys()].map(i => ({
+            id: i,
+            neighbors: [],
+            links: [],
+            color: randomColor()
+
+        })),
+        links: [...Array(NODES).keys()]
+            .filter(id => id)
+            .map(id => ({
+                source: id,
+                target: Math.round(Math.random() * (id - 1)),
+                weight: Math.round(Math.random() * 10),
+            }))
+    };
+
+    let highlightNodes = new Set();
+    let highlightLinks = new Set();
+    let hoverNode = null;
+    let highlightNodeAddLink = null;
+
+    let highlightNodesShortPath = new Set();
+    let highlightLinksShortPath = new Set();
+    let highlightNodesShortPathFirst = null;
+    let highlightNodesShortPathEnd = null;
+
+
+    let Graph = ForceGraph3D({
+        extraRenderers: [new CSS2DRenderer()]
+    })(document.getElementById("3d-graph"))
+        .enableNodeDrag(true)
+        //.showNavInfo(true)
+        .onNodeClick(leftClick)
+        .onNodeRightClick(rightClick)
+        .onLinkClick(rightClickLink)
+        .graphData(initData)
+        .nodeLabel('id')
+        .nodeRelSize(4)
+        .nodeResolution(20)
+        .linkResolution(20)
+        .linkDirectionalArrowResolution(40)
+        .linkDirectionalArrowResolution(20)
+        .linkThreeObjectExtend(true)
+        .linkThreeObject(link => {
+            // extend link with text sprite
+            const sprite = new SpriteText(link.weight);
+            sprite.color = 'rgba(0,255,255,1)';
+            sprite.textHeight = 5;
+            return sprite;
+        })
+        .linkPositionUpdate((sprite, {start, end}) => {
+            const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
+                [c]: end[c] - (end[c] - start[c]) / 3 // calc middle point
+            })));
+
+            // Position sprite
+            Object.assign(sprite.position, middlePos);
+        })
+        .nodeThreeObject(node => {
+            let nodeEl = document.createElement('div');
+            nodeEl.textContent = node.id;
+            nodeEl.style.color = "white";
+            nodeEl.className = 'node-label';
+            return new CSS2DObject(nodeEl);
+        })
+        .nodeThreeObjectExtend(true)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //         .nodeColor(node => highlightNodes.has(node) ? node === hoverNode ? 'rgb(255,0,0,1)' :'rgba(255,160,0,1)' : node === hoverNodeEdit ? 'rgba(0,255,0,1)' : node.color)
+        .nodeColor(node => {
+            if (highlightNodes.has(node))
+                if (node === hoverNode)
+                    return 'rgb(255,0,0,1)';
+                else
+                    return 'rgb(255,160,0,1)'
+
+            if (node === highlightNodeAddLink)
+                return 'rgba(0,255,0,1)';
+
+            if (highlightNodesShortPathFirst === node)
+                return 'rgb(0,255,0,1)';
+            if (highlightNodesShortPathEnd === node)
+                return 'rgb(255,0,0,1)';
+            if (highlightNodesShortPath.has(node))
+                return 'rgb(255,160,0,1)'
+
+            return node.color;
+        })
+        .linkWidth(link => {
+            if (highlightLinks.has(link))
+                return 4;
+
+            if (highlightLinksShortPath.has(link))
+                return 4;
+            return 1;
+        })
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1)
+        //.linkDirectionalParticles("value")
+        .linkDirectionalParticleSpeed(0.01)
+        .linkDirectionalParticleColor(link => {
+            return "white";
+        })
+        //.linkCurvature(0.25)
+        .linkDirectionalParticles(link => {
+            if (highlightLinks.has(link))
+                return 4;
+            if (highlightLinksShortPath.has(link))
+                return 4;
+            return 4;
+        })
+        .linkDirectionalParticleWidth(link => {
+            if (highlightLinks.has(link))
+                return 4;
+            if (highlightLinksShortPath.has(link))
+                return 3;
+            return 1;
+        })
+        .onNodeHover(node => {
+            if ((!node && !highlightNodes.size) || (node && hoverNode === node)) return;
+
+            highlightNodes.clear();
+            highlightLinks.clear();
+
+            if (node) {
+                highlightNodes.add(node);
+            }
+
+            hoverNode = node || null;
+
+            updateHighlight();
+        })
+        .onLinkHover(link => {
+            highlightNodes.clear();
+            highlightLinks.clear();
+
+            if (link) {
+                highlightLinks.add(link);
+                highlightNodes.add(link.source);
+                highlightNodes.add(link.target);
+            }
+
+            updateHighlight();
+        });
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    function findShortPathByInteractive(node) {
+        if (highlightNodesShortPathFirst && highlightNodesShortPathEnd) {
+            highlightNodesShortPathFirst = null;
+            highlightNodesShortPathEnd = null;
+            highlightNodesShortPath.clear();
+            highlightLinksShortPath.clear();
+        }
+        if (!highlightNodesShortPathFirst)
+            highlightNodesShortPathFirst = node;
+        else
+            highlightNodesShortPathEnd = node;
+
+        if (highlightNodesShortPathFirst && highlightNodesShortPathEnd) {
+            let firstID = Number(highlightNodesShortPathFirst.id);
+            let endID = Number(highlightNodesShortPathEnd.id);
+            findShortPath(firstID, endID);
+        }
+        updateHighlight();
+    }
+
+    function findShortPathFromDoc() {
+        let first = Number(document.getElementById("fromShortPath").value);
+        let end = Number(document.getElementById("toShortPath").value);
+        if (highlightNodesShortPathFirst && highlightNodesShortPathEnd) {
+            highlightNodesShortPathFirst = null;
+            highlightNodesShortPathEnd = null;
+            highlightNodesShortPath.clear();
+            highlightLinksShortPath.clear();
+        }
+            highlightNodesShortPathFirst = Graph.graphData().nodes[first];
+            highlightNodesShortPathEnd = Graph.graphData().nodes[end];
+
+        if (highlightNodesShortPathFirst && highlightNodesShortPathEnd) {
+            let firstID = Number(highlightNodesShortPathFirst.id);
+            let endID = Number(highlightNodesShortPathEnd.id);
+            findShortPath(firstID, endID);
+        }
+        updateHighlight();
+    }
+
+    function findShortPath(first, end) {
+        Module()
+            .then((instance) => {
+                webAssemblyFunction({first, end}, instance);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
+    const webAssemblyFunction = (params, instance) => {
+        let {nodes, links} = Graph.graphData();
+        let numVertex = Number(nodes.length);
+        let numEdges = Number(links.length);
+        let {first, end} = params;
+        let array = [];
+        links.forEach(function (item, i, links) {
+            array.push(Number(item.source.id));
+            array.push(Number(item.target.id));
+            array.push(Number(item.weight));
+            console.log(item.source.id)
+        })
+        array.push(0);
+        array.push(0);
+        console.log(array)
+        let typedArray = new Int32Array(array);
+        console.log(typedArray)
+        let arrayEdges = instance._malloc(
+            typedArray.length * typedArray.BYTES_PER_ELEMENT
+        );
+        instance.HEAP32.set(
+            typedArray, arrayEdges / typedArray.BYTES_PER_ELEMENT
+        );
+        instance.ccall(
+            "ford_bellman",
+            null,
+            ["number", "number", "number", "number", "number"],
+            [numVertex, numEdges, arrayEdges, first, end]
+        );
+        console.log(arrayEdges)
+
+        let newArray = instance.HEAP32.subarray(
+            arrayEdges / typedArray.BYTES_PER_ELEMENT,
+            arrayEdges / typedArray.BYTES_PER_ELEMENT + typedArray.length
+        );
+        console.log(newArray)
+        let arrayWay = [];
+
+        for (let i = 2; i <= newArray.length; i++) {
+            arrayWay[i - 2] = newArray[i];
+            if (newArray[i] < 0)
+                break;
+        }
+        arrayWay.reverse();
+        if (newArray[1] === 2147483647) {
+            document.getElementById("shorPath").innerHTML = "SHORT PATH: NOT FOUND";
+            highlightNodesShortPathEnd = null;
+            updateHighlight();
+            return 0;
+        }
+        let shortWay = `SHORT PATH:--->[DISTANCE: ${newArray[1].toString()}] --->[WAY:   ${arrayWay[1]}`;
+        Graph.graphData().links.forEach(function (item) {
+            if (item.source.id === arrayWay[1] && item.target.id === arrayWay[2]) {
+                highlightLinksShortPath.add(item);
+            }
+        })
+        for (let i = 2; i < arrayWay.length - 1; i++) {
+            shortWay = shortWay + `->${arrayWay[i]}`;
+            highlightNodesShortPath.add(Graph.graphData().nodes[arrayWay[i]]);
+            Graph.graphData().links.forEach(function (item) {
+                if (item.source.id === arrayWay[i] && item.target.id === arrayWay[i + 1]) {
+                    highlightLinksShortPath.add(item);
+                }
+            })
+        }
+        updateHighlight();
+        shortWay = shortWay + `->${arrayWay[arrayWay.length - 1]}`
+        shortWay = shortWay + ']';
+
+
+        instance._free(newArray);
+        document.getElementById("shorPath").innerHTML = shortWay;
+        updateHighlight();
+        return 0;
+    }
+
+    function animationWay() {
+        let {nodes, links} = Graph.graphData();
+
+        setTimeout(() => {
+            animationToNode(highlightNodesShortPathFirst)
+        }, 0)
+        let i = 1;
+        highlightNodesShortPath.forEach(function (item) {
+            setTimeout(() => {
+                animationToNode(item)
+            }, 1500 * i)
+            i++;
+        })
+        setTimeout(() => {
+            animationToNode(highlightNodesShortPathEnd)
+        }, 1500 * (i + 1))
+    }
+
+    function animationToNode(node) {
+        console.log(node)
+        // Aim at node from outside it
+        const distance = 100;
+        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+        const newPos = node.x || node.y || node.z
+            ? {x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio}
+            : {x: 0, y: 0, z: distance}; // special case if node is in (0,0,0)
+
+        Graph.cameraPosition(
+            newPos, // new position
+            node, // lookAt ({ x, y, z })
+            1500  // ms transition duration
+        );
+    }
+
+    function updateHighlight() {
+        // trigger update of highlighted objects in scene
+        Graph
+            .nodeColor(Graph.nodeColor())
+            .linkWidth(Graph.linkWidth())
+            .linkDirectionalParticles(Graph.linkDirectionalParticles());
+
+    }
+
+    function updateNodes() {
+        Graph
+            .nodeThreeObject(node => {
+                let nodeEl = document.createElement('div');
+                //nodeEl.textContent = node.id;
+                nodeEl.style.color = "white";
+                if (document.getElementById("checkView1").checked)
+                    nodeEl.textContent = ""
+                else
+                    nodeEl.textContent = node.id;
+                nodeEl.className = 'node-label';
+                return new CSS2DObject(nodeEl);
+            })
+    }
+
+    function updateLinks() {
+        Graph
+            .linkThreeObject(link => {
+                // extend link with text sprite
+                const sprite = new SpriteText(link.weight);
+                sprite.color = 'white';
+                if (document.getElementById("checkView2").checked)
+                    sprite.textHeight = 0;
+                else
+                    sprite.textHeight = 5;
+                return sprite;
+            })
+    }
+
+    function updateStat() {
+        let {nodes, links} = Graph.graphData();
+        let nodesLength = nodes.length;
+        let linksLength = links.length;
+        document.getElementById("numStat").innerHTML = "NUM NODES/LINKS:    " + (nodesLength).toString() + "/" + (linksLength).toString()
+    }
+
+    function hideNode() {
+
+        if (document.getElementById("checkView3").checked) {
+            Graph.nodeVisibility(false)
+        } else {
+            Graph.nodeVisibility(true)
+        }
+    }
+
+    function smallLinks() {
+        if (document.getElementById("checkView4").checked) {
+            Graph
+                .nodeRelSize(3)
+                .linkWidth(link => {
+                    if (highlightLinks.has(link))
+                        return 2;
+                    if (highlightLinksShortPath.has(link))
+                        return 2;
+
+                    return 0;
+                })
+                .linkDirectionalParticleWidth(link => {
+                    if (highlightLinks.has(link))
+                        return 2;
+                    if (highlightLinksShortPath.has(link))
+                        return 2;
+                    return 1;
+                })
+        }
+        if (!document.getElementById("checkView4").checked) {
+            Graph
+                .nodeRelSize(4)
+                .linkWidth(link => {
+                    if (highlightLinks.has(link))
+                        return 4;
+
+                    if (highlightLinksShortPath.has(link))
+                        return 4;
+
+                    return 1;
+                })
+                .linkDirectionalParticleWidth(link => {
+                    if (highlightLinks.has(link))
+                        return 4;
+                    if (highlightLinksShortPath.has(link))
+                        return 3;
+                    return 1;
+                })
+        }
+    }
+
+    function hideLinks() {
+        if (document.getElementById("checkView5").checked) {
+            Graph
+                .linkVisibility(link => {
+                    if (highlightLinksShortPath.has(link))
+                        return true;
+                    return false;
+                })
+        } else {
+            Graph
+                .linkVisibility(true)
+        }
+    }
+
+    function hideParticles() {
+        if (document.getElementById("checkView6").checked) {
+            Graph
+                .linkDirectionalParticles(link => {
+                    if (highlightLinks.has(link))
+                        return 0;
+                    if (highlightLinksShortPath.has(link))
+                        return 0;
+                    return 0;
+                })
+        } else
+            Graph
+                .linkDirectionalParticles(link => {
+                    if (highlightLinks.has(link))
+                        return 4;
+                    if (highlightLinksShortPath.has(link))
+                        return 4;
+                    return 4;
+                })
+    }
+
+    function hideArrows() {
+        if (document.getElementById("checkView7").checked) {
+            Graph
+                .linkDirectionalArrowLength(0)
+        } else
+            Graph
+                .linkDirectionalArrowLength(3.5)
+    }
+
+    function reDraw() {
+        updateNodes();
+        updateLinks();
+        hideNode();
+        smallLinks();
+        hideLinks();
+        hideParticles();
+        hideArrows();
+    }
+
+    Graph.d3Force('charge').strength(-120);
+    updateStat();
+    document.getElementById("addRandomNodesFromDocButton").addEventListener("click", addRandomNodes)
+    document.getElementById("addNodeFromDocButton").addEventListener("click", addNodeFromDoc)
+    document.getElementById("deleteNodeFromDocButton").addEventListener("click", deleteNodeFromDoc)
+
+    document.getElementById("addRandomLinksFromDocButton").addEventListener("click", addRandomLinks)
+    document.getElementById("addLinksFromDocButton").addEventListener("click", addLinksFromDoc)
+    document.getElementById("deleteLinksFromDocButton").addEventListener("click", deleteLinksFromDoc)
+    document.getElementById("editLinksFromDocButton").addEventListener("click", editLinksFromDoc)
+
+    document.getElementById("reDraw").addEventListener("click", reDraw)
+    document.getElementById("withoutDirection").addEventListener("click", withoutDirection)
+    document.getElementById("showShortPath").addEventListener("click", animationWay)
+    document.getElementById("findShortPathFromDoc").addEventListener("click", findShortPathFromDoc)
+
+    document.getElementById("changeColorRGB").addEventListener('input', function () {
+        let rgb = document.getElementById("changeColorRGB").value;
+        rgb = `rgb(${rgb})`
+        document.getElementById("currentColor").style.color = rgb;
+        document.getElementById("currentColor").style.background = rgb;
+    }, false);
+
+    //////////////////////////////////////////////////////////////////// FUNCTION
+    function leftClick(node) {
+        let currMode = document.getElementsByName("mode");
+
+        if (currMode[0].checked)
+            addNode(node);
+        if (currMode[1].checked)
+            addLinks(node);
+        if (currMode[2].checked)
+            removeNode(node);
+        if (currMode[3].checked)
+            changeColor(node);
+        if (currMode[4].checked)
+            findShortPathByInteractive(node);
+    }
+
+    function rightClick(node) {
+        let currMode = document.getElementsByName("mode");
+
+        if (currMode[1].checked)
+            clearNodesAddLinks(node);
+        if (currMode[4].checked)
+            clearNodesShortPath(node);
+    }
+
+    function rightClickLink(links) {
+        let currMode = document.getElementsByName("mode");
+        if (currMode[2].checked)
+            removeLink(links)
+    }
+
+    function addNode(node) {
+        let {nodes, links} = Graph.graphData();
+        let id = nodes.length;
+
+        let currModeNode = document.getElementsByName("modeNode");
+        let weight = 10;
+        if (currModeNode[0].checked) {
+            if (!document.getElementById("numRandomWeightNode").value)
+                document.getElementById("numRandomWeightNode").value = weight;
+            weight = Math.round(Math.random() * Number(document.getElementById("numRandomWeightNode").value));
+        }
+        if (currModeNode[1].checked) {
+            if (!document.getElementById("numSpecWeightNode").value)
+                document.getElementById("numSpecWeightNode").value = weight;
+            weight = Number(document.getElementById("numSpecWeightNode").value);
+        }
+        let from = id;
+        let to = node.id;
+        if (document.getElementById("checkReverse1").checked) {
+            from = node.id;
+            to = id;
+        }
+        Graph.graphData({
+            nodes: [...nodes, {id: id, neighbors: [], links: [], color: randomColor()}],
+            links: [...links, {source: from, target: to, weight: weight}]
+        });
+        updateStat();
+    }
+
+    function addLinks(node) {
+        let currModeNode = document.getElementsByName("modeLinks");
+        let weight = 10;
+        if (currModeNode[0].checked) {
+            if (!document.getElementById("numRandomWeightLinks").value)
+                document.getElementById("numRandomWeightLinks").value = weight;
+            weight = Math.round(Math.random() * Number(document.getElementById("numRandomWeightLinks").value));
+        }
+        if (currModeNode[1].checked) {
+            if (!document.getElementById("numSpecWeightLinks").value)
+                document.getElementById("numSpecWeightLinks").value = weight;
+            weight = Number(document.getElementById("numSpecWeightLinks").value);
+        }
+
+        updateHighlight();
+        if (highlightNodeAddLink === null) {
+            highlightNodeAddLink = node;
+        } else {
+            let {nodes, links} = Graph.graphData();
+            Graph.graphData({
+                nodes: [...nodes],
+                links: [...links, {
+                    source: highlightNodeAddLink.id, target: node.id, weight: weight
+                }]
+            })
+            clearNodesAddLinks();
+        }
+        updateStat();
+    }
+
+    function removeNode(node) {
+        let {nodes, links} = Graph.graphData();
+        links = links.filter(l => l.source !== node && l.target !== node); // Remove links attached to node
+        nodes.splice(node.id, 1); // Remove node
+        nodes.forEach((n, idx) => {
+            n.id = idx;
+        }); // Reset node ids to array index
+        Graph.graphData({nodes, links});
+        updateNodes();
+        updateStat();
+    }
+
+    function removeLink(link) {
+        let {nodes, links} = Graph.graphData();
+        links = links.filter(l => l.index !== link.index); // Remove links attached to node
+        Graph.graphData({nodes, links});
+        updateStat();
+    }
+
+    function clearNodesAddLinks(node) {
+        highlightNodeAddLink = null;
+        updateHighlight();
+    }
+
+    function clearNodesShortPath(node) {
+        highlightNodesShortPathFirst = null;
+        highlightNodesShortPathEnd = null;
+        highlightNodesShortPath.clear();
+        highlightLinksShortPath.clear();
+        updateHighlight();
+    }
+
+    function addNodeFromDoc() {
+        let connectID = Number(document.getElementById("connectNodeID").value);
+        let weight = Number(document.getElementById("connectNodeIDWeight").value);
+        if (connectID && weight) {
+            let {nodes, links} = Graph.graphData();
+            let id = nodes.length;
+
+            let from = connectID;
+            let to = id;
+            if (document.getElementById("checkReverse2").checked) {
+                from = id;
+                to = connectID;
+            }
+            Graph.graphData({
+                nodes: [...nodes, {id: id, neighbors: [], links: [], color: randomColor()}],
+                links: [...links, {source: from, target: to, weight: weight}]
+            });
+        }
+        updateStat();
+    }
+
+    function deleteNodeFromDoc() {
+        let deleteID = Number(document.getElementById("deleteNodeID").value);
+        if (deleteID)
+            removeNode(Graph.graphData().nodes[deleteID])
+        updateStat();
+    }
+
+    function addLinksFromDoc() {
+        let fromID = Number(document.getElementById("connectLinkID").value);
+        let toID = Number(document.getElementById("connectLinkToID").value);
+        let weight = Number(document.getElementById("connectLinkWeight").value);
+        if (fromID && toID && weight) {
+            let {nodes, links} = Graph.graphData();
+            Graph.graphData({
+                nodes: [...nodes],
+                links: [...links, {source: fromID, target: toID, weight: weight}]
+            });
+        }
+        updateStat();
+    }
+
+    function deleteLinksFromDoc() {
+        let fromID = Number(document.getElementById("deleteLinkID").value);
+        let toID = Number(document.getElementById("deleteLinkToID").value);
+        if (fromID && toID) {
+            let {nodes, links} = Graph.graphData();
+            links.forEach(function (item, i, links) {
+                if (item.source.id === fromID && item.target.id === toID) {
+                    removeLink(item)
+                }
+            })
+        }
+        updateStat();
+    }
+
+    function editLinksFromDoc() {
+        let fromID = Number(document.getElementById("editLinkID").value);
+        let toID = Number(document.getElementById("editLinkToID").value);
+        let weight = Number(document.getElementById("editLinkWeight").value);
+        if (fromID && toID && weight) {
+            let {nodes, links} = Graph.graphData();
+            links.forEach(function (item, i, links) {
+                if (item.source.id === fromID && item.target.id === toID) {
+                    console.log("weight" + item.weight)
+                    item.weight = weight;
+                    console.log("new_weight" + item.weight)
+                }
+            })
+            Graph.graphData({
+                nodes: [...nodes],
+                links: [...links]
+            });
+            updateLinks();
+        }
+    }
+
+    function addRandomNodes() {
+        let numNodes = Number(document.getElementById("numNodes").value);
+        let maxWeightRandom = Number(document.getElementById("randomWeightNodes").value);
+        if (numNodes && maxWeightRandom) {
+            for (let i = 0; i < numNodes; i++) {
+                let {nodes, links} = Graph.graphData();
+                let id = nodes.length;
+
+                let from = Math.round(Math.random() * (id - 1));
+                let to = id;
+                let weight = Math.round(Math.random() * maxWeightRandom);
+                let a = Math.round(Math.random() * (id - 1)) % 2;
+                console.log(a);
+                if (a) {
+                    let temp = from;
+                    from = id;
+                    to = temp;
+                }
+                Graph.graphData({
+                    nodes: [...nodes, {
+                        id: id,
+                        neighbors: [],
+                        links: [],
+                        color: randomColor()
+                    }],
+                    links: [...links, {source: from, target: to, weight: weight}]
+                });
+            }
+        }
+        updateStat();
+    }
+
+    function addRandomLinks() {
+        let numLinks = Number(document.getElementById("numLinks").value);
+        let maxWeightRandom = Number(document.getElementById("randomWeightLinks").value);
+        if (numLinks && maxWeightRandom) {
+            for (let i = 0; i < numLinks; i++) {
+                let {nodes, links} = Graph.graphData();
+                let id = nodes.length;
+
+                let from = Math.round(Math.random() * (id - 1));
+                let to = Math.round(Math.random() * (id - 1));
+                while (from === to) {
+                    to = Math.round(Math.random() * (id - 1));
+                }
+                let weight = Math.round(Math.random() * maxWeightRandom);
+
+                let find = false;
+                links.forEach(function (item) {
+                    if (item.source.id === from && item.target.id === to) {
+                        find = true;
+                    }
+
+                })
+
+                if (!find) {
+                    Graph.graphData({
+                        nodes: [...nodes],
+                        links: [...links, {source: from, target: to, weight: weight}]
+                    });
+                }
+            }
+        }
+        updateStat();
+    }
+
+    function changeColor(node) {
+        if (!document.getElementById("changeColorRGB").value)
+            document.getElementById("changeColorRGB").value = '0,255,255,1'
+        let rgba = document.getElementById("changeColorRGB").value;
+        node.color = `rgba(${rgba})`
+        updateHighlight();
+    }
+
+    function randomColor() {
+        //return 'rgba('+(Math.round(Math.random()*255).toString())+','+(Math.round(Math.random()*255).toString())+','+(Math.round(Math.random()*255).toString())+',1)'
+        return 'rgba(' + (Math.round(Math.random() * 255).toString()) + ',0,255,0.8)';
+    }
+
+    function withoutDirection() {
+        let {nodes, links} = Graph.graphData();
+        console.log(nodes)
+        console.log(links)
+        let newLinks = [];
+        links.forEach( (item) => {
+            newLinks.push({source: item.target.id, target: item.source.id, weight: item.weight});
+        })
+
+        console.log(newLinks)
+        Graph.graphData({
+            nodes: [...nodes],
+            links: [...links.concat(newLinks)]
+        });
+        updateStat();
+        document.getElementById("withoutDirection").disabled = true;
+
+
+    }
+</script>
+</body>

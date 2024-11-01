@@ -1,8 +1,8 @@
 ﻿using Lab_1.Data;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
-using System.Linq;
 
 namespace Lab_1.Models
 {
@@ -15,128 +15,223 @@ namespace Lab_1.Models
         }
 
         #region Passenger
-        public async Task AddPassenger(PassengerDTO passenger)
+        public async Task<bool> AddPassenger(PassengerDTO passenger)
         {
             await _context.Passengers.AddAsync(new Passenger(passenger));
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            return true;
         }
 
-        public async Task<List<PassengerDTO>> GetPassengers()
+        public async Task<List<PassengerDTO>?> GetPassengers()
         {
-            var passengers = await _context.Passengers.Include("Flights").ToListAsync();
-
-            return passengers.Select(pass => new PassengerDTO(pass)).ToList();
+            //var passengers = await _context.Passengers.Include("Flights").ToListAsync();
+            //return passengers.Select(pass => new PassengerDTO(pass)).ToList();
+            return (await _context.Passengers.ToListAsync()).Select(pass => new PassengerDTO(pass)).ToList();
         }
 
-        public async Task<PassengerDTO> GetPassenger(int passengerId)
+        public async Task<PassengerDTO?> GetPassenger(int passengerId)
         {
             return new PassengerDTO(await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == passengerId));
         }
 
-        public async Task<List<Flight>> GetPassengerFlights(int passengerId)
+        // TODO добавить фильтр все или текущие
+        public async Task<List<Flight>?> GetPassengerFlights(int passengerId, bool current)
         {
             var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == passengerId);
-
-            return passenger.Flights.OrderBy(flight => flight.DepartingTime).ToList();
+            if (current)
+                return passenger.Flights.Where(flight => flight.DepartingTime.ToUniversalTime() >= DateTime.UtcNow).OrderBy(flight => flight.DepartingTime).ToList();
+            else
+                return passenger.Flights.OrderBy(flight => flight.DepartingTime).ToList();
         }
 
-        public async Task<Passenger> UpdatePassenger(PassengerDTO pass)
-        {
+        public async Task<bool> UpdatePassenger(PassengerDTO pass)
+        { 
             var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == pass.ID);
+            if (passenger == null)
+                return false;
 
             _context.Passengers.Update(passenger.Update(pass));
 
-            _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
 
-            return passenger;
+            return true;
         }
 
-        public async Task<Passenger> AddPassengerOnFlight(int id, List<int> FlightsID)
+        public async Task<bool> AddPassengerOnFlight(int id, List<int> FlightsID)
         {
-            var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
+            var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);            
+            if (passenger == null)
+                return false;
 
             foreach (var FlightID in FlightsID)
             {
                 var flight = await _context.Flights.FindAsync(FlightID);
-
-                passenger.Flights.Add(flight);
+                if (flight.DepartingTime.AddHours(3).ToUniversalTime() >= DateTime.UtcNow)
+                    passenger.Flights.Add(flight);
+                else
+                    return false;
             }
 
             _context.Passengers.Update(passenger);
-            _context.SaveChangesAsync();
 
-            return passenger;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task<Passenger> RemovePassengerFromFlight(int id, List<int> FlightsID)
+        public async Task<bool> RemovePassengerFromFlight(int id, List<int> FlightsID)
         {
             var passenger = await _context.Passengers.Include("Flights").FirstOrDefaultAsync(p => p.ID == id);
+            if (passenger == null)
+                return false;
+
             foreach (var FlightID in FlightsID)
             {
                 var flight = await _context.Flights.FindAsync(FlightID);
-
-                passenger.Flights.Remove(flight);
+                if (flight.DepartingTime.AddHours(1).ToUniversalTime() <= DateTime.UtcNow)
+                    passenger.Flights.Remove(flight);
+                else
+                    return false;
             }
 
             _context.Passengers.Update(passenger);
-            await _context.SaveChangesAsync();
 
-            return passenger;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task DeletePassenger(int id)
+        public async Task<bool> DeletePassenger(int id)
         {
-            var passengers = await _context.Passengers.FindAsync(id);
+            var passenger = await _context.Passengers.FindAsync(id);
+            if (passenger == null)
+                return false;
 
-            _context.Passengers.Remove(passengers);
-            _context.SaveChangesAsync();
+            _context.Passengers.Remove(passenger);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
         #endregion
 
         #region Flight
-        public async Task AddFlight(Flight flight)
+        public async Task<bool> AddFlight(Flight flight)
         {
             _context.Flights.Add(flight);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            return true;
         }
 
-        public async Task<List<Flight>> GetFlights()
+        public async Task<List<Flight>?> GetFlights(DateTime? TimeFrom, DateTime? TimeTo)
         {
-            return await _context.Flights.ToListAsync();
+            if (TimeFrom == null & TimeTo == null)
+                return await _context.Flights.ToListAsync();
+            else if (TimeFrom == null)
+                return await _context.Flights.Where(flight => flight.DepartingTime <= TimeTo).ToListAsync();
+            else if (TimeTo == null)
+                return await _context.Flights.Where(flight => flight.DepartingTime >= TimeFrom).ToListAsync();
+            else
+                return await _context.Flights.Where(flight => flight.DepartingTime >= TimeFrom & flight.DepartingTime <= TimeTo).ToListAsync();
         }
 
-        public async Task<Flight> GetFlight(int id)
+        public async Task<Flight?> GetFlight(int id)
         {
             return await _context.Flights.FindAsync(id);
         }
 
-        public async Task<List<PassengerDTO>> GetPassengeerOnFlight(int number)
+        public async Task<List<Passenger>?> GetPassengerOnFlight(int number)
         {
             var selectedPeople = await _context.Passengers.SelectMany(p => p.Flights,
                             (p, f) => new { Passenger = p, Flight = f })
                           .Where(p => p.Flight.Number == number)
                           .Select(u => u.Passenger).ToListAsync();
 
-            /*var test = from passenger in _context.Passengers
-                                 from flight in passenger.Flights
-                                 where flight.Number == number
-                                 select passenger;*/
+            //var test = from passenger in _context.Passengers
+            //           from flight in passenger.Flights
+            //           where flight.Number == number
+            //           select passenger;
 
-            return selectedPeople.Select(pass => new PassengerDTO(pass)).ToList();
+            return selectedPeople;
         }
 
-        public async Task UpdateFlight(Flight flight)
+        public async Task<bool> UpdateFlight(Flight flight)
         {
-            _context.Entry(flight).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Flights.Update(flight);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task DeleteFlight(int id)
+        public async Task<bool> DeleteFlight(int id)
         {
-            var flights = await _context.Flights.FindAsync(id);
+            var flight = await _context.Flights.FindAsync(id);
+            if (flight == null)
+                return false;
 
-            _context.Flights.Remove(flights);
-            await _context.SaveChangesAsync();
+            _context.Flights.Remove(flight);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
         #endregion
     }

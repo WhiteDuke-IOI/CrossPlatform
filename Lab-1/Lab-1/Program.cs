@@ -1,9 +1,10 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Lab_1.Data;
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.EntityFrameworkCore;
 using Lab_1;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Lab_1.Data;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Lab_1.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
+
+builder.Services.AddTransient<FlightManager>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

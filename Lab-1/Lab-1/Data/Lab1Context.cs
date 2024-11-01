@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Lab_1.Models;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Data.Sqlite;
 
 namespace Lab_1.Data

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab_1.Models
 {
@@ -12,7 +11,7 @@ namespace Lab_1.Models
         public string CityTo { get; set; }
         public DateTime DepartingTime { get; set; }
         public DateTime ArrivalTime { get; set; }
-        public TimeSpan FlightTime { get { return (DepartingTime - ArrivalTime); } }
+        public TimeSpan FlightTime { get { return (ArrivalTime - DepartingTime); } }
 
         public Flight() { }
     }

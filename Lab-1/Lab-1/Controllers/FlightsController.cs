@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lab_1.Data;
 using Lab_1.Models;
@@ -15,11 +10,11 @@ namespace Lab_1.Controllers
     [Route("api/[controller]")]
     public class FlightsController : ControllerBase
     {
-        private readonly Lab1Context _context;
+        private readonly FlightManager manager;
 
-        public FlightsController(Lab1Context context)
+        public FlightsController(FlightManager manager)
         {
-            _context = context;
+            this.manager = manager;
         }
 
         // POST: api/Flights
@@ -27,80 +22,47 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<Flight>> AddFlight([FromBody] Flight flight)
         {
-            _context.Flights.Add(flight);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFlight", new { id = flight.Number }, flight);
+            return await manager.AddFlight(flight) ? CreatedAtAction("GetFlights", new { id = flight.Number }, flight) : BadRequest("failed to add flight");
         }
 
         // GET: api/Flights
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Flight>>> GetFlights()
+        public async Task<ActionResult<IEnumerable<Flight>>> GetFlights(DateTime? TimeFrom, DateTime? TimeTo)
         {
-            return await _context.Flights.ToListAsync();
+            var flights = await manager.GetFlights(TimeFrom, TimeTo);
+            if (flights == null)
+                return NotFound();
+            return flights;
         }
 
         // GET: api/Flights/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Flight>> GetFlight(int id)
         {
-            var flight = await _context.Flights.FindAsync(id);
-
+            var flight = await manager.GetFlight(id);
             if (flight == null)
-            {
                 return NotFound();
-            }
-
             return flight;
         }
 
         // GET: api/Flights/5
         [HttpGet("{number}/GetPassenger")]
         [Authorize(Roles = "user")]
-        public async Task<ActionResult<IEnumerable<int>>> GetPassengeerOnFlight(int number)
+        public async Task<ActionResult<List<PassengerDTO>>> GetPassengeerOnFlight(int number)
         {
-            var selectedPeople = await _context.Passengers.SelectMany(p => p.Flights,
-                            (p, f) => new { Passenger = p, Flight = f })
-                          .Where(p => p.Flight.Number == number)
-                          .Select(u => u.Passenger.ID).ToListAsync();
-
-            /*var test = from passenger in _context.Passengers
-                                 from flight in passenger.Flights
-                                 where flight.Number == number
-                                 select passenger;*/
-
-            if (selectedPeople == null)
-            {
+            var passengers = await manager.GetPassengerOnFlight(number);
+            if (passengers == null)
                 return NotFound();
-            }
-
+            var selectedPeople = passengers.Select(pass => new PassengerDTO(pass)).ToList();
             return selectedPeople;
         }
 
         // PUT: api/Flights
         [HttpPut]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> PutFlight([FromBody] Flight flights)
+        public async Task<IActionResult> PutFlight([FromBody] Flight flight)
         {
-            _context.Entry(flights).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FlightsExists(flights.Number))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return await manager.UpdateFlight(flight) ? CreatedAtAction("GetFlights", new { id = flight.Number }, flight) : NotFound();
         }
 
         // DELETE: api/Flights/5
@@ -108,21 +70,7 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteFlight(int id)
         {
-            var flights = await _context.Flights.FindAsync(id);
-            if (flights == null)
-            {
-                return NotFound();
-            }
-
-            _context.Flights.Remove(flights);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool FlightsExists(int id)
-        {
-            return _context.Flights.Any(e => e.Number == id);
+            return await manager.DeletePassenger(id) ? Ok() : NotFound();
         }
     }
 }
