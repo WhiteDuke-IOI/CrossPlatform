@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"number\": 0,\r\n  \"route\": \"test\",\r\n  \"cityFrom\": \"moscow\",\r\n  \"cityTo\": \"sochi\",\r\n  \"dapartingTime\": \"2024-10-18T15:53:37.247Z\",\r\n  \"arrivalTime\": \"2024-10-18T15:53:37.247Z\"\r\n}",
+					"raw": "{\r\n  \"route\": \"1\",\r\n  \"cityFrom\": \"string1\",\r\n  \"cityTo\": \"string2\",\r\n  \"departingTime\": \"2024-10-30T10:44:18.355Z\",\r\n  \"arrivalTime\": \"2024-10-30T20:44:18.355Z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,13 +87,23 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{Host}}/api/Flights",
+					"raw": "{{Host}}/api/Flights?TimeFrom=2023-10-28T18%3A49%3A07.098Z&TimeTo=2025-10-28T18%3A49%3A07.098Z",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
 						"Flights"
+					],
+					"query": [
+						{
+							"key": "TimeFrom",
+							"value": "2023-10-28T18%3A49%3A07.098Z"
+						},
+						{
+							"key": "TimeTo",
+							"value": "2025-10-28T18%3A49%3A07.098Z"
+						}
 					]
 				}
 			},
@@ -157,7 +167,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"number\": 0,\r\n  \"route\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"dapartingTime\": \"2024-10-18T15:54:35.263Z\",\r\n  \"arrivalTime\": \"2024-10-18T15:54:35.263Z\"\r\n}",
+					"raw": "{\r\n  \"number\": 9,\r\n  \"route\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"dapartingTime\": \"2024-10-18T10:54:35.263Z\",\r\n  \"arrivalTime\": \"2024-10-18T13:54:35.263Z\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -165,20 +175,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{Host}}/api/Flights/:id",
+					"raw": "{{Host}}/api/Flights/",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
 						"Flights",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": ""
-						}
+						""
 					]
 				}
 			},
@@ -202,7 +206,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": ""
+							"value": "1"
 						}
 					]
 				}
@@ -219,7 +223,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"string\",\r\n  \"surname\": \"string\",\r\n  \"loyalty\": \"string\",\r\n  \"flights\": null\r\n}",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"Vlad\",\r\n  \"surname\": \"Knyazev\",\r\n  \"loyalty\": \"Normal\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -294,15 +298,22 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{Host}}/api/Passenger/:id/GetFlights",
+					"raw": "{{Host}}/api/Passengers/:id/GetFlights",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
-						"Passenger",
+						"Passengers",
 						":id",
 						"GetFlights"
+					],
+					"query": [
+						{
+							"key": "current",
+							"value": "true",
+							"disabled": true
+						}
 					],
 					"variable": [
 						{
@@ -321,7 +332,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"string\",\r\n  \"surname\": \"string\",\r\n  \"loyalty\": \"string\"\r\n}",
+					"raw": "{\r\n  \"id\": 2,\r\n  \"name\": \"string\",\r\n  \"surname\": \"string\",\r\n  \"loyalty\": \"string\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -329,20 +340,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{Host}}/api/Passenger/:id",
+					"raw": "{{Host}}/api/Passengers/",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
-						"Passenger",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"Passengers",
+						""
 					]
 				}
 			},
@@ -355,7 +360,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  0\r\n]",
+					"raw": "[\r\n  8\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,13 +368,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{Host}}/api/Passenger/:id/AddOnFlights",
+					"raw": "{{Host}}/api/Passengers/:id/AddOnFlights",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
-						"Passenger",
+						"Passengers",
 						":id",
 						"AddOnFlights"
 					],
@@ -398,13 +403,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{Host}}/api/Passenger/:id/AddOnFlights",
+					"raw": "{{Host}}/api/Passengers/:id/AddOnFlights",
 					"host": [
 						"{{Host}}"
 					],
 					"path": [
 						"api",
-						"Passenger",
+						"Passengers",
 						":id",
 						"AddOnFlights"
 					],
@@ -449,7 +454,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNlciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6InVzZXIiLCJuYmYiOjE3Mjk1MDQ0NjAsImV4cCI6MTcyOTUwNDUyMCwiaXNzIjoiTXlBdXRoU2VydmVyIiwiYXVkIjoiTXlBdXRoQ2xpZW50In0.KTDr1MUNb5WpsulnKgSYouSSQHjX8Y5ts35S0oak2fE",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsIm5iZiI6MTczMDE0MTY5MywiZXhwIjoxNzMwMTQ1MjkzLCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.QbmCJM2OpOJSVOUPco1MGijalRdq7z2go1X6zQriTMA",
 				"type": "string"
 			}
 		]

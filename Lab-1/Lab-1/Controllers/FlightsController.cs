@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lab_1.Data;
+﻿using Lab_1.BLL;
 using Lab_1.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Lab_1.Controllers
@@ -10,9 +9,9 @@ namespace Lab_1.Controllers
     [Route("api/[controller]")]
     public class FlightsController : ControllerBase
     {
-        private readonly FlightManager manager;
+        private readonly Manager manager;
 
-        public FlightsController(FlightManager manager)
+        public FlightsController(Manager manager)
         {
             this.manager = manager;
         }
@@ -47,7 +46,7 @@ namespace Lab_1.Controllers
 
         // GET: api/Flights/5
         [HttpGet("{number}/GetPassenger")]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "admin, user")]
         public async Task<ActionResult<List<PassengerDTO>>> GetPassengeerOnFlight(int number)
         {
             var passengers = await manager.GetPassengerOnFlight(number);
@@ -62,7 +61,7 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutFlight([FromBody] Flight flight)
         {
-            return await manager.UpdateFlight(flight) ? CreatedAtAction("GetFlights", new { id = flight.Number }, flight) : NotFound();
+            return await manager.UpdateFlight(flight) ? Ok() : NotFound();
         }
 
         // DELETE: api/Flights/5
@@ -70,7 +69,7 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteFlight(int id)
         {
-            return await manager.DeletePassenger(id) ? Ok() : NotFound();
+            return await manager.DeleteFlight(id) ? Ok() : NotFound();
         }
     }
 }

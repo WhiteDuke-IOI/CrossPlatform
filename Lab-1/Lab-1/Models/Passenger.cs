@@ -6,11 +6,11 @@ namespace Lab_1.Models
     {
         [Key][ScaffoldColumn(false)]
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Loyalty { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Surname { get; set; } = string.Empty;
+        public string Loyalty { get; set; } = string.Empty;
         [Display(Name = "Flight Numbers")]
-        public List<Flight>? Flights { get; set; }
+        public List<Flight>? Flights { get; set; } = null;
 
         public Passenger() { }
 
@@ -35,9 +35,9 @@ namespace Lab_1.Models
     {
         [Key][ScaffoldColumn(false)]
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Loyalty { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Surname { get; set; } = string.Empty;
+        public string Loyalty { get; set; } = string.Empty;
 
         public PassengerDTO() { }
 
