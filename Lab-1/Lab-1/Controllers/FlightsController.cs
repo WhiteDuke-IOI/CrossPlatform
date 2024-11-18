@@ -19,9 +19,10 @@ namespace Lab_1.Controllers
         // POST: api/Flights
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<Flight>> AddFlight([FromBody] Flight flight)
+        public async Task<ActionResult<Flight>> AddFlight([FromBody] FlightDTO flight)
         {
-            return await manager.AddFlight(flight) ? CreatedAtAction("GetFlights", new { id = flight.Number }, flight) : BadRequest("failed to add flight");
+            var newFlight = await manager.AddFlight(flight);
+            return newFlight != null ? CreatedAtAction(nameof(GetFlight), new { id = newFlight.Number }, newFlight) : BadRequest("failed to add flight");
         }
 
         // GET: api/Flights
@@ -59,7 +60,7 @@ namespace Lab_1.Controllers
         // PUT: api/Flights
         [HttpPut]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> PutFlight([FromBody] Flight flight)
+        public async Task<IActionResult> PutFlight([FromBody] FlightDTO flight)
         {
             return await manager.UpdateFlight(flight) ? Ok() : NotFound();
         }

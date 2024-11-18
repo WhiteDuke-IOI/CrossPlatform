@@ -70,7 +70,13 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin, user")]
         public async Task<ActionResult> AddPassengerOnFlight(int id, [FromBody] List<int> FlightsID)
         {
-            return (await manager.AddPassengerOnFlight(id, FlightsID)) ? Ok() : NotFound();
+            var code = await manager.ModifyPassengerFlight(id, FlightsID, true);
+            if (code == 1)
+                return Ok();
+            else if (code == 0)
+                return NotFound();
+            else
+                return BadRequest();
         }
 
         // User
@@ -78,7 +84,13 @@ namespace Lab_1.Controllers
         [Authorize(Roles = "admin, user")]
         public async Task<ActionResult> RemovePassengerFromFlight(int id, [FromBody] List<int> FlightsID)
         {
-            return await manager.RemovePassengerFromFlight(id, FlightsID) ? Ok() : NotFound();
+            var code = await manager.ModifyPassengerFlight(id, FlightsID, false);
+            if (code == 1)
+                return Ok();
+            else if (code == 0)
+                return NotFound();
+            else
+                return BadRequest();
         }
 
         // Admin
