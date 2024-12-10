@@ -28,7 +28,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"login\": \"user\",\r\n  \"password\": \"user\"\r\n}",
+					"raw": "{\r\n  \"login\": \"admin\",\r\n  \"password\": \"admin\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -58,7 +58,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"route\": \"1\",\r\n  \"cityFrom\": \"string1\",\r\n  \"cityTo\": \"string2\",\r\n  \"departingTime\": \"2024-10-30T10:44:18.355Z\",\r\n  \"arrivalTime\": \"2024-10-30T20:44:18.355Z\"\r\n}",
+					"raw": "{\r\n  \"number\": 0,\r\n  \"operator\": \"AirFlot\",\r\n  \"capacity\": 250,\r\n  \"route\": \"AC-21-04\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,7 +87,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{Host}}/api/Flights?TimeFrom=2023-10-28T18%3A49%3A07.098Z&TimeTo=2025-10-28T18%3A49%3A07.098Z",
+					"raw": "{{Host}}/api/Flights",
 					"host": [
 						"{{Host}}"
 					],
@@ -98,11 +98,13 @@
 					"query": [
 						{
 							"key": "TimeFrom",
-							"value": "2023-10-28T18%3A49%3A07.098Z"
+							"value": "2023-10-28T18%3A49%3A07.098Z",
+							"disabled": true
 						},
 						{
 							"key": "TimeTo",
-							"value": "2025-10-28T18%3A49%3A07.098Z"
+							"value": "2025-10-28T18%3A49%3A07.098Z",
+							"disabled": true
 						}
 					]
 				}
@@ -167,7 +169,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"number\": 9,\r\n  \"route\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"dapartingTime\": \"2024-10-18T10:54:35.263Z\",\r\n  \"arrivalTime\": \"2024-10-18T13:54:35.263Z\"\r\n}",
+					"raw": "{\r\n  \"number\": 0,\r\n  \"operator\": \"string\",\r\n  \"capacity\": 0,\r\n  \"route\": \"string\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -206,7 +208,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "5"
 						}
 					]
 				}
@@ -223,7 +225,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"Vlad\",\r\n  \"surname\": \"Knyazev\",\r\n  \"loyalty\": \"Normal\"\r\n}",
+					"raw": "{\r\n  \"name\": \"Alexander\",\r\n  \"surname\": \"Tefs\",\r\n  \"loyalty\": \"Low\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -285,7 +287,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "4"
 						}
 					]
 				}
@@ -332,7 +334,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 2,\r\n  \"name\": \"string\",\r\n  \"surname\": \"string\",\r\n  \"loyalty\": \"string\"\r\n}",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Alexander\",\r\n    \"surname\": \"Tefs\",\r\n    \"loyalty\": \"Low\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -360,7 +362,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  8\r\n]",
+					"raw": "[\r\n  1\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -395,7 +397,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n  0\r\n]",
+					"raw": "[\r\n  1\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -403,7 +405,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{Host}}/api/Passengers/:id/AddOnFlights",
+					"raw": "{{Host}}/api/Passengers/:id/RemoveFromFlights",
 					"host": [
 						"{{Host}}"
 					],
@@ -411,7 +413,7 @@
 						"api",
 						"Passengers",
 						":id",
-						"AddOnFlights"
+						"RemoveFromFlights"
 					],
 					"variable": [
 						{
@@ -447,6 +449,128 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Add Route",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"routeName\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"departingTime\": \"2024-11-18T11:52:11.743Z\",\r\n  \"arrivalTime\": \"2024-11-18T11:52:11.743Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Host}}/api/MyRoute",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"MyRoute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Routes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Host}}/api/MyRoute",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"MyRoute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Route",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Host}}/api/MyRoute/:routeName",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"MyRoute",
+						":routeName"
+					],
+					"variable": [
+						{
+							"key": "routeName",
+							"value": "AC-21-05"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Route",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"routeName\": \"string\",\r\n  \"cityFrom\": \"string\",\r\n  \"cityTo\": \"string\",\r\n  \"departingTime\": \"2024-11-18T11:55:01.128Z\",\r\n  \"arrivalTime\": \"2024-11-18T11:55:01.128Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Host}}/api/MyRoute",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"MyRoute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Route",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Host}}/api/MyRoute/:nameRoute",
+					"host": [
+						"{{Host}}"
+					],
+					"path": [
+						"api",
+						"MyRoute",
+						":nameRoute"
+					],
+					"variable": [
+						{
+							"key": "nameRoute",
+							"value": "AC-21-04"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -454,7 +578,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsIm5iZiI6MTczMDE0MTY5MywiZXhwIjoxNzMwMTQ1MjkzLCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.QbmCJM2OpOJSVOUPco1MGijalRdq7z2go1X6zQriTMA",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJhZG1pbiIsIm5iZiI6MTczMTkzMTQ5NiwiZXhwIjoxNzMxOTM1MDk2LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.ZfEEHdbcjH0jzq_qf4rwsqBWszReSeEaaCID2rSp2dY",
 				"type": "string"
 			}
 		]
